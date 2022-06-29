@@ -45,8 +45,14 @@ const changeSize = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     const image = req.query.image;
     const width = Number(req.query.width);
     const height = Number(req.query.height);
-    yield (0, imageprocess_1.readData)(image, width || 200, height || 200);
-    yield next();
+    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}.jpg`);
+    if (check) {
+        yield next();
+    }
+    else {
+        yield (0, imageprocess_1.readData)(image, width || 200, height || 200);
+        yield next();
+    }
 });
 exports.changeSize = changeSize;
 const checkImage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

@@ -41,8 +41,13 @@ export const changeSize = async (
   const image: string = req.query.image as string;
   const width = Number(req.query.width);
   const height = Number(req.query.height);
-  await readData(image, width || 200, height || 200);
-  await next();
+  const check = await fs.existsSync(`resources/thumbs/${image}.jpg`);
+    if (check) {
+        await next();
+    } else {
+        await readData(image, width || 200, height || 200);
+        await next();
+    }
 };
 
 export const checkImage = async (

@@ -4,7 +4,8 @@
   "description": "javascript first fullstack project(udacity)",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint 'src/index.ts'",
+    "lint": "eslint src/**/*.ts",
+    "lintfix": "eslint --fix src/**/*.ts",
     "prettier": "prettier --config .prettierrc \"src/**/*.ts\" --write",
     "start": "nodemon src/index.ts",
     "build": "npx tsc",
