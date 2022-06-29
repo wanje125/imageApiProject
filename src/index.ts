@@ -2,7 +2,6 @@ import express, { query } from 'express';
 import path from 'path';
 import {
   errorFinder,
-  makeDir,
   changeSize,
     checkImage1,
     checkImage2
@@ -16,14 +15,14 @@ const port = 3000;
 app.get(
   '/api/images',
   errorFinder,
-    makeDir,
     checkImage1,
   changeSize,
     checkImage2,
     (req: express.Request, res: express.Response): void => {
     const image: string = req.query.image as string;
-
-    const imagepath = path.join(__dirname, `../resources/thumbs/${image}.jpg`);
+    const width: number = Number(req.query.width) || 200;
+    const height: number = Number(req.query.height) || 200;
+    const imagepath = path.join(__dirname, `../resources/thumbs/${image}-${height}-${width}.jpg`);
     res.sendFile(imagepath);
   }
 );

@@ -2,6 +2,7 @@ import app from '../index';
 import supertest from 'supertest';
 import fs from 'fs';
 import path from 'path';
+import { readData } from '../utilities/imageprocess';
 
 const request = supertest(app);
 
@@ -29,10 +30,10 @@ describe('Test query string', () => {
 
 describe('Test resize image', () => {
     it('if the width and height of image really changed in the thumbs folder', async () => {
-        await request.get('/api/images?image=image');
+        await readData('image', 300, 200);
         const ori_image_path = path.join(__dirname, '../../resources/images/image.jpg');
         const image = fs.statSync(ori_image_path);
-        const image_path = path.join(__dirname, '../../resources/thumbs/image.jpg');
+        const image_path = path.join(__dirname, '../../resources/thumbs/image-300-200.jpg');
         const thumb = fs.statSync(image_path);
         expect(image.size).not.toBe(thumb.size);
     });

@@ -51,14 +51,14 @@ export const checkImage1 = async (
 };
 // resize the image and save in thumbs folder
 export const changeSize = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-):Promise<void> => {
-  const image: string = req.query.image as string;
-  const width = Number(req.query.width);
-  const height = Number(req.query.height);
-  const check = await fs.existsSync(`resources/thumbs/${image}.jpg`);
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+): Promise<void> => {
+    const image: string = req.query.image as string;
+    const width: number = Number(req.query.width) || 200;
+    const height: number = Number(req.query.height) || 200;
+    const check = await fs.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
     if (check) {
         await next();
     } else {
@@ -73,7 +73,9 @@ export const checkImage2 = async (
   next: express.NextFunction
 ) :Promise<void> => {
   const image: string = req.query.image as string;
-  const check = await fs.existsSync(`resources/thumbs/${image}.jpg`);
+  const width: number = Number(req.query.width) || 200;
+  const height: number = Number(req.query.height) || 200;
+  const check = await fs.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
     if (check) {
         await next();
     }

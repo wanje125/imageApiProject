@@ -57,9 +57,9 @@ exports.checkImage1 = checkImage1;
 // resize the image and save in thumbs folder
 const changeSize = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.image;
-    const width = Number(req.query.width);
-    const height = Number(req.query.height);
-    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}.jpg`);
+    const width = Number(req.query.width) || 200;
+    const height = Number(req.query.height) || 200;
+    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
     if (check) {
         yield next();
     }
@@ -72,7 +72,9 @@ exports.changeSize = changeSize;
 // check this image is created in the thumbs folder
 const checkImage2 = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.image;
-    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}.jpg`);
+    const width = Number(req.query.width) || 200;
+    const height = Number(req.query.height) || 200;
+    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
     if (check) {
         yield next();
     }

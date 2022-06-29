@@ -17,12 +17,12 @@ const fs_1 = require("fs");
 const fs_2 = __importDefault(require("fs"));
 const sharp_1 = __importDefault(require("sharp"));
 // resize image in the image folder and move it to thumbs folder 
-const readData = (image, width, height) => __awaiter(void 0, void 0, void 0, function* () {
+const readData = (image, height, width) => __awaiter(void 0, void 0, void 0, function* () {
     const myFile = yield fs_1.promises.readFile(`resources/images/${image}.jpg`);
     yield (0, sharp_1.default)(myFile)
         .resize(width, height)
-        .toFile(`resources/thumbs/${image}.jpg`);
-    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}.jpg`);
+        .toFile(`resources/thumbs/${image}-${height}-${width}.jpg`);
+    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
     yield console.log(check);
 });
 exports.readData = readData;
