@@ -7,8 +7,8 @@ import sharp from 'sharp';
 export const readData = async (
   image: string,
   width?: number,
-  height?: number
-) => {
+    height?: number
+):Promise<void> =>  {
   const myFile = await fsPromises.readFile(`resources/images/${image}.jpg`);
   await sharp(myFile)
     .resize(width, height)

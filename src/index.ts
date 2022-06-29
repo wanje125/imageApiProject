@@ -19,8 +19,8 @@ app.get(
     makeDir,
     checkImage1,
   changeSize,
-  checkImage2,
-  (req: express.Request, res: express.Response) => {
+    checkImage2,
+    (req: express.Request, res: express.Response): void => {
     const image: string = req.query.image as string;
 
     const imagepath = path.join(__dirname, `../resources/thumbs/${image}.jpg`);

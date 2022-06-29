@@ -21,8 +21,8 @@ export const errorFinder = (
 export const makeDir = async (
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
-) => {
+    next: express.NextFunction
+): Promise<void> => {
   try {
     await fsPromises.rm('./resources/thumbs', { recursive: true });
   } catch {
@@ -38,7 +38,7 @@ export const checkImage1 = async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
-) => {
+): Promise<void> => {
     const image: string = req.query.image as string;
     const check = await fs.existsSync(`resources/images/${image}.jpg`);
     if (check) {
@@ -54,7 +54,7 @@ export const changeSize = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
-) => {
+):Promise<void> => {
   const image: string = req.query.image as string;
   const width = Number(req.query.width);
   const height = Number(req.query.height);
@@ -71,7 +71,7 @@ export const checkImage2 = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
-) => {
+) :Promise<void> => {
   const image: string = req.query.image as string;
   const check = await fs.existsSync(`resources/thumbs/${image}.jpg`);
     if (check) {
