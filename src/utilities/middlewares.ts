@@ -15,7 +15,6 @@ export const errorFinder = (
     next();
   } else {
     res.send('There is a wrong image name. So please check urls.');
-    throw new Error('image name is missing');
   }
 };
 // making thumbs folder for resized image
@@ -33,6 +32,22 @@ export const makeDir = async (
     await console.log('thumbs folder build');
     await next();
   }
+};
+// check image in the imagess folder
+export const checkImage1 = async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => {
+    const image: string = req.query.image as string;
+    const check = await fs.existsSync(`resources/images/${image}.jpg`);
+    if (check) {
+        await next();
+    }
+    else {
+        res.send('There is a wrong image name. So please check urls.');
+
+    }
 };
 // resize the image and save in thumbs folder
 export const changeSize = async (
@@ -52,17 +67,17 @@ export const changeSize = async (
     }
 };
 // check this image is created in the thumbs folder
-export const checkImage = async (
+export const checkImage2 = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
   const image: string = req.query.image as string;
-  try {
-    await fs.existsSync(`resources/thumbs/${image}.jpg`);
-    await next();
-  } catch {
-    res.send('There is a wrong image name. So please check urls.');
-    throw new Error('image name is wrong');
-  }
+  const check = await fs.existsSync(`resources/thumbs/${image}.jpg`);
+    if (check) {
+        await next();
+    }
+    else {
+        res.send('There is a wrong image name. So please check urls.');
+    } 
 };

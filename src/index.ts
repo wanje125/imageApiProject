@@ -4,7 +4,8 @@ import {
   errorFinder,
   makeDir,
   changeSize,
-  checkImage
+    checkImage1,
+    checkImage2
 } from './utilities/middlewares';
 import { check } from 'prettier';
 
@@ -15,9 +16,10 @@ const port = 3000;
 app.get(
   '/api/images',
   errorFinder,
-  makeDir,
+    makeDir,
+    checkImage1,
   changeSize,
-  checkImage,
+  checkImage2,
   (req: express.Request, res: express.Response) => {
     const image: string = req.query.image as string;
 

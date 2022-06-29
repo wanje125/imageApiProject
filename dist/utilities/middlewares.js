@@ -12,21 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkImage = exports.changeSize = exports.makeDir = exports.errorFinder = void 0;
+exports.checkImage2 = exports.changeSize = exports.checkImage1 = exports.makeDir = exports.errorFinder = void 0;
 const fs_1 = require("fs");
 const fs_2 = __importDefault(require("fs"));
 const imageprocess_1 = require("./imageprocess");
 //middleware함수는 next가 필수다.
+// finding error if req.query.image doesn't exists throw error
 const errorFinder = (req, res, next) => {
     if (req.query.image) {
         next();
     }
     else {
         res.send('There is a wrong image name. So please check urls.');
-        throw new Error('image name is missing');
     }
 };
 exports.errorFinder = errorFinder;
+// making thumbs folder for resized image
 const makeDir = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield fs_1.promises.rm('./resources/thumbs', { recursive: true });
@@ -41,6 +42,19 @@ const makeDir = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.makeDir = makeDir;
+// check image in the imagess folder
+const checkImage1 = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const image = req.query.image;
+    const check = yield fs_2.default.existsSync(`resources/images/${image}.jpg`);
+    if (check) {
+        yield next();
+    }
+    else {
+        res.send('There is a wrong image name. So please check urls.');
+    }
+});
+exports.checkImage1 = checkImage1;
+// resize the image and save in thumbs folder
 const changeSize = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.image;
     const width = Number(req.query.width);
@@ -55,15 +69,15 @@ const changeSize = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.changeSize = changeSize;
-const checkImage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+// check this image is created in the thumbs folder
+const checkImage2 = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.image;
-    try {
-        yield fs_2.default.existsSync(`resources/thumbs/${image}.jpg`);
+    const check = yield fs_2.default.existsSync(`resources/thumbs/${image}.jpg`);
+    if (check) {
         yield next();
     }
-    catch (_b) {
+    else {
         res.send('There is a wrong image name. So please check urls.');
-        throw new Error('image name is wrong');
     }
 });
-exports.checkImage = checkImage;
+exports.checkImage2 = checkImage2;

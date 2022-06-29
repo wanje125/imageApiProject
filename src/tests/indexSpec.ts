@@ -1,6 +1,7 @@
 import app from '../index';
 import supertest from 'supertest';
 import fs from 'fs';
+import path from 'path';
 
 const request = supertest(app);
 
@@ -24,4 +25,15 @@ describe('Test query string', () => {
     const response = await fs.existsSync(`resources/thumbs/${nothing}.jpg`);
     expect(response).toBeFalsy();
   });
+});
+
+describe('Test resize image', () => {
+    it('if the width and height of image really changed in the thumbs folder', async () => {
+        await request.get('/api/images?image=image');
+        const ori_image_path = path.join(__dirname, '../../resources/images/image.jpg');
+        const image = fs.statSync(ori_image_path);
+        const image_path = path.join(__dirname, '../../resources/thumbs/image.jpg');
+        const thumb = fs.statSync(image_path);
+        expect(image.size).not.toBe(thumb.size);
+    });
 });

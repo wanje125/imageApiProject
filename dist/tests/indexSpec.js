@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../index"));
 const supertest_1 = __importDefault(require("supertest"));
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const request = (0, supertest_1.default)(index_1.default);
 describe('Test endpoint responses', () => {
     it('gets the api endpoint', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,5 +33,15 @@ describe('Test query string', () => {
         const nothing = 'nothing';
         const response = yield fs_1.default.existsSync(`resources/thumbs/${nothing}.jpg`);
         expect(response).toBeFalsy();
+    }));
+});
+describe('Test resize image', () => {
+    it('if the width and height of image really changed in the thumbs folder', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield request.get('/api/images?image=image');
+        const ori_image_path = path_1.default.join(__dirname, '../../resources/images/image.jpg');
+        const image = fs_1.default.statSync(ori_image_path);
+        const image_path = path_1.default.join(__dirname, '../../resources/thumbs/image.jpg');
+        const thumb = fs_1.default.statSync(image_path);
+        expect(image.size).not.toBe(thumb.size);
     }));
 });

@@ -16,6 +16,7 @@ exports.readData = void 0;
 const fs_1 = require("fs");
 const fs_2 = __importDefault(require("fs"));
 const sharp_1 = __importDefault(require("sharp"));
+// resize image in the image folder and move it to thumbs folder 
 const readData = (image, width, height) => __awaiter(void 0, void 0, void 0, function* () {
     const myFile = yield fs_1.promises.readFile(`resources/images/${image}.jpg`);
     yield (0, sharp_1.default)(myFile)
