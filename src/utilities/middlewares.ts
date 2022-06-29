@@ -4,6 +4,8 @@ import fs from 'fs';
 import { readData } from './imageprocess';
 
 //middleware함수는 next가 필수다.
+
+// finding error if req.query.image doesn't exists throw error
 export const errorFinder = (
   req: express.Request,
   res: express.Response,
@@ -16,7 +18,7 @@ export const errorFinder = (
     throw new Error('image name is missing');
   }
 };
-
+// making thumbs folder for resized image
 export const makeDir = async (
   req: express.Request,
   res: express.Response,
@@ -32,7 +34,7 @@ export const makeDir = async (
     await next();
   }
 };
-
+// resize the image and save in thumbs folder
 export const changeSize = async (
   req: express.Request,
   res: express.Response,
@@ -49,7 +51,7 @@ export const changeSize = async (
         await next();
     }
 };
-
+// check this image is created in the thumbs folder
 export const checkImage = async (
   req: express.Request,
   res: express.Response,
