@@ -14,8 +14,10 @@ javascript first fullstack project(udacity)
 # api EX
 
 width and height is optional
-/image/api/image={}&width={}&height={}
-/image/api/image=image
+
+> {current_IP}/api/images/?image=image&width=300&height=100
+> 
+> {current_IP}/api/images/?image=image
 
 # image(only 1 image)
 resources/images/image.jpg
