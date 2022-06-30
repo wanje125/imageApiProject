@@ -1,7 +1,7 @@
 import express from 'express';
 import { promises as fsPromises } from 'fs';
 import fs from 'fs';
-import { readData } from './imageprocess';
+import { resizeData } from './imageprocess';
 
 //middleware함수는 next가 필수다.
 
@@ -17,22 +17,8 @@ export const errorFinder = (
     res.send('There is a wrong image name. So please check urls.');
   }
 };
-// making thumbs folder for resized image
-export const makeDir = async (
-  req: express.Request,
-  res: express.Response,
-    next: express.NextFunction
-): Promise<void> => {
-  try {
-    await fsPromises.rm('./resources/thumbs', { recursive: true });
-  } catch {
-    await next();
-  } finally {
-    await fsPromises.mkdir('./resources/thumbs');
-    await console.log('thumbs folder build');
-    await next();
-  }
-};
+
+
 // check image in the imagess folder
 export const checkImage1 = async (
     req: express.Request,
@@ -58,11 +44,11 @@ export const changeSize = async (
     const image: string = req.query.image as string;
     const width: number = Number(req.query.width) || 200;
     const height: number = Number(req.query.height) || 200;
-    const check = await fs.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
-    if (check) {
+    const check = await fs.existsSync(`resources/thumbs/${image}-${width}-${height}.jpg`);
+    if (!check) {
+        await resizeData(image, width || 200, height || 200);
         await next();
     } else {
-        await readData(image, width || 200, height || 200);
         await next();
     }
 };
@@ -75,7 +61,7 @@ export const checkImage2 = async (
   const image: string = req.query.image as string;
   const width: number = Number(req.query.width) || 200;
   const height: number = Number(req.query.height) || 200;
-  const check = await fs.existsSync(`resources/thumbs/${image}-${height}-${width}.jpg`);
+    const check = await fs.existsSync(`resources/thumbs/${image}-${width}-${height}.jpg`);
     if (check) {
         await next();
     }
